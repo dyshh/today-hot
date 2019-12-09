@@ -6,7 +6,7 @@ const schedule = require("node-schedule");
 const app = express();
 const { tasks } = require("./tasks");
 const { FileServer } = require("./tools");
-const resourcePath = path.join(__dirname, "./resource");
+const resourcePath = path.join(__dirname, "./html");
 app.use(
   express.static(resourcePath, {
     setHeaders(res) {
@@ -23,7 +23,6 @@ function mainTask() {
   const getMsgTask = Promise.all(tasks());
   getMsgTask
     .then(res => {
-      console.log(res,now)
       const { data } = JSON.parse(
         FileServer.read(path.join(resourcePath, "./index.json")).toString()
       );
