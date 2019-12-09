@@ -6,9 +6,9 @@ const schedule = require("node-schedule");
 const app = express();
 const { tasks } = require("./tasks");
 const { FileServer } = require("./tools");
-const resourcePath = path.join(__dirname, "./html");
+const htmlPath = path.join(__dirname, "./html");
 app.use(
-  express.static(resourcePath, {
+  express.static(htmlPath, {
     setHeaders(res) {
       res.set("Access-Control-Allow-Origin", "*");
     }
@@ -24,11 +24,11 @@ function mainTask() {
   getMsgTask
     .then(res => {
       const { data } = JSON.parse(
-        FileServer.read(path.join(resourcePath, "./index.json")).toString()
+        FileServer.read(path.join(htmlPath, "./index.json")).toString()
       );
       const text = FileServer.createMdMsg(res, now);
       FileServer.write(
-        path.join(resourcePath, "./index.json"),
+        path.join(htmlPath, "./index.json"),
         JSON.stringify({
           data: [
             {
@@ -47,8 +47,9 @@ function mainTask() {
       mainTask();
     });
 }
+
 function crontab() {
   schedule.scheduleJob(`00 00 11 * * *`, mainTask);
 }
-mainTask()
+
 crontab();
