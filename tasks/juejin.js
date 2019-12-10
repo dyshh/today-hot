@@ -17,6 +17,7 @@ module.exports = {
             const navList = await page.$$eval(navSelector, ele => ele.map(el => el.innerText))
             // 前端导航索引
             const webNavIndex = navList.findIndex(item => item === navType)
+            // 等待跳转
             await Promise.all([page.waitForNavigation(), page.click(`${navSelector}:nth-child(${webNavIndex + 1})`)])
         })
     }

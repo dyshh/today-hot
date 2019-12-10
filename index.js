@@ -7,6 +7,8 @@ const app = express()
 const { tasks } = require('./tasks')
 const { FileServer } = require('./tools')
 const htmlPath = path.join(__dirname, './html')
+
+// 提供静态页面
 app.use(
     express.static(htmlPath, {
         setHeaders(res) {
@@ -18,11 +20,13 @@ app.use(
 app.listen(8888)
 
 function mainTask() {
+    // 今天
     const now = dayjs().format('YYYY-MM-DD')
-    console.log(chalk.red(`[Process] 开始获取 [${now}] 资讯`))
+    // 并发
     const getMsgTask = Promise.all(tasks())
     getMsgTask
         .then(res => {
+            // 现有log
             const { data } = JSON.parse(FileServer.read(path.join(htmlPath, './index.json')).toString())
             const text = FileServer.createMdMsg(res, now)
             FileServer.write(
@@ -33,11 +37,10 @@ function mainTask() {
                             date: now,
                             text
                         },
-                        ...data
+                        ...data.filter(item => item.date !== now) // 覆盖现有的今天数据
                     ]
                 })
             )
-            console.log(chalk.red(`[Success] 成功获取 [${now}] 资讯`))
         })
         .catch(e => {
             console.log(chalk.white.bgRed.bold(`[Failed] 获取 ${now} 资讯 失败`))
@@ -45,8 +48,11 @@ function mainTask() {
         })
 }
 
+mainTask()
+
 function crontab() {
-    schedule.scheduleJob(`00 00 11 * * *`, mainTask)
+    // 每五分钟跑一次
+    schedule.scheduleJob(`*/5 * * * *`, mainTask)
 }
 
 crontab()

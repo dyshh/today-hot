@@ -1,16 +1,25 @@
 const puppeteer = require('puppeteer')
 const chalk = require('chalk')
 const fs = require('fs')
+/**
+ * 通用爬取任务方法
+ * @param {} param0
+ * @param {} eventHandle
+ */
 const Task = ({ pageUrl, pageSelector, title }, eventHandle) => {
     return new Promise(async (resolve, reject) => {
         try {
+            // 打开chrome浏览器
             const browser = await puppeteer.launch({
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
             })
+            // 新建页面
             const page = await browser.newPage()
+            // 跳转到pageUrl
             await page.goto(pageUrl)
-            console.log(chalk.blue(`[Process] 开始获取 ${title}`))
+            // 等待eventHandle处理完
             eventHandle && (await eventHandle(page))
+            // 等列表页加载完
             await page.waitForSelector(pageSelector, {
                 timeout: 5000
             })
@@ -20,11 +29,11 @@ const Task = ({ pageUrl, pageSelector, title }, eventHandle) => {
                     text: el.innerText
                 }))
             )
+            console.log(res)
             await browser.close()
-            console.log(res.length && chalk.yellow(`[Success] 成功获取 ${title}`))
             resolve({
                 title,
-                list: res.slice(0, 5)
+                list: res
             })
         } catch (e) {
             reject(e)
