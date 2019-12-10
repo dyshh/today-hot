@@ -1,7 +1,5 @@
-const juejin = require("./juejin");
+const juejin = require('./juejin')
 
 module.exports = {
-  tasks: () => [
-    juejin.task()
-  ]
-};
+    tasks: () => [juejin.task()]
+}
