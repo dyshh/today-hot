@@ -53,7 +53,7 @@ mainTask()
 
 function crontab() {
     // 每五分钟跑一次
-    schedule.scheduleJob(`* /5 * * * *`, mainTask)
+    schedule.scheduleJob(`0 */5 *  * *`, mainTask)
 }
 
 crontab()
