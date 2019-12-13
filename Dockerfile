@@ -18,8 +18,9 @@ RUN npm config set registry "https://registry.npm.taobao.org"
 
 RUN npm install -g pm2@latest
 
-# 只安装package.json dependencies
-RUN npm install --production
+RUN npm install puppeteer --unsafe-perm=true --allow-root
+
+# RUN yarn
 
 # 设置时区
 RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime

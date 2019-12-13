@@ -12,7 +12,6 @@
     "license": "ISC",
     "dependencies": {
         "chalk": "^3.0.0",
-        "chrome-finder": "^1.0.6",
         "dayjs": "^1.8.17",
         "express": "^4.17.1",
         "gh-pages": "^2.1.1",

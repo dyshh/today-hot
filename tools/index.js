@@ -29,7 +29,6 @@ const Task = ({ pageUrl, pageSelector, title }, eventHandle) => {
                     text: el.innerText
                 }))
             )
-            console.log(res)
             await browser.close()
             resolve({
                 title,
@@ -39,6 +38,7 @@ const Task = ({ pageUrl, pageSelector, title }, eventHandle) => {
             reject(e)
         }
     }).catch(e => {
+        console.log(e)
         console.log(chalk.white.bgRed.bold(`[Failed] 获取 ${title} 失败`))
     })
 }

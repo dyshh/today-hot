@@ -29,7 +29,6 @@ function mainTask() {
             // 现有log
             const { data } = JSON.parse(FileServer.read(path.join(htmlPath, './index.json')).toString())
             const text = FileServer.createMdMsg(res, now)
-            console.log(chalk.red(`[Success] 成功获取 [${now}] 资讯`))
             FileServer.write(
                 path.join(htmlPath, './index.json'),
                 JSON.stringify({
@@ -45,7 +44,6 @@ function mainTask() {
         })
         .catch(e => {
             console.log(chalk.white.bgRed.bold(`[Failed] 获取 ${now} 资讯 失败`))
-            mainTask()
         })
 }
 
@@ -53,7 +51,7 @@ mainTask()
 
 function crontab() {
     // 每五分钟跑一次
-    schedule.scheduleJob(`0 */5 *  * *`, mainTask)
+    schedule.scheduleJob(`0 */5 * * *`, mainTask)
 }
 
 crontab()
